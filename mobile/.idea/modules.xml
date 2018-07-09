@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/timemanager.iml" filepath="$PROJECT_DIR$/timemanager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/timemanager_android.iml" filepath="$PROJECT_DIR$/timemanager_android.iml" />
+    </modules>
+  </component>
+</project>
