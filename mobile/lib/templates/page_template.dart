@@ -7,6 +7,7 @@ import 'package:timemanager/drawer/drawer_entry.dart';
 import 'package:timemanager/pages/home.dart';
 import 'package:timemanager/pages/calendar.dart';
 
+import 'package:timemanager/templates/fast_left_slide_page_animation.dart';
 
 class PageTemplate extends StatelessWidget {
   final String pageTitle;
@@ -53,10 +54,13 @@ class PageTemplate extends StatelessWidget {
               new Container(
                 margin: EdgeInsets.only(left: leftMargin, top: topMargin),
                 child: new DrawerEntry(
-                  tapHandle: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => PageTemplate(pageTitle: 'Calendar', page: CalendarPage(),))
-                  ),
+                  tapHandle: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => PageTemplate(pageTitle: 'Calendar', page: CalendarPage()))
+                    );
+                  },
                   icon: Icon(Icons.help),
                   text: ' Calendar'
                 )
