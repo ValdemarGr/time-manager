@@ -20,22 +20,20 @@ class CalendarDate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      children: Statics.provider.getData().map((entryData) {
+      children: Statics.provider.getData(this.date).map((entryData) {
+        return <Widget>[
+          Container(height: 40.0),
 
-        return Column(
-          children: <Widget>[
-            Container(height: 20.0),
-
-            TimeEntry(
-              sideMargins: 10.0, 
-              height: 40.0,
-              child: Text(entryData.entryName),
-              leftSwipe: () => print(''),
-              rightSwipe: () => print(''),
-            )
-          ],
-        );
-      }).toList()
+          TimeEntry(
+            sideMargins: 0.0, 
+            height: 60.0,
+            foreground: Text(entryData.entryName),
+            background: Container(color: Colors.blue),
+            leftSwipe: () => print(''),
+            rightSwipe: () => print(''),
+          )
+        ];
+      }).expand((i) => i).toList()
     );
   }
 }

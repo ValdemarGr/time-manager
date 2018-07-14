@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 class TimeEntry extends StatelessWidget {
   final double sideMargins;
   final double height;
-  final Widget child;
+  final Widget foreground;
+  final Widget background;
 
   final Function rightSwipe;
   final Function leftSwipe;
@@ -15,7 +16,9 @@ class TimeEntry extends StatelessWidget {
     @required
     this.height,
     @required
-    this.child,
+    this.foreground,
+    @required
+    this.background,
     @required
     this.rightSwipe,
     @required
@@ -25,13 +28,18 @@ class TimeEntry extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.blue,
       height: this.height,
       margin: EdgeInsets.only(left: this.sideMargins, right: this.sideMargins),
-      child: GestureDetector(
-        onTap: () => print(''),
-        child: this.child
-      ),
+      child: Stack(
+        children: <Widget>[
+          background,
+
+          GestureDetector(
+            onTap: () => print(''),
+            child: foreground
+          ),
+        ],
+      )
     );
   }
 }

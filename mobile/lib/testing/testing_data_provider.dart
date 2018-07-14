@@ -7,7 +7,7 @@ import 'package:timemanager/calendar/time_entry_data.dart';
 
 class TestingDataProvider extends CalendarDataProviderC {
   @override
-  List<TimeEntryData> getData() {
+  List<TimeEntryData> getData(DateTime dt) {
     return <TimeEntryData>[
       TimeEntryData(
         entryName: 'First'
