@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 
 import 'package:timemanager/config/themes.dart';
 
-import 'package:timemanager/drawer/drawer_entry.dart';
 import 'package:timemanager/pages/home.dart';
 import 'package:timemanager/pages/calendar.dart';
+import 'package:timemanager/pages/settings.dart';
 
-import 'package:timemanager/templates/fast_left_slide_page_animation.dart';
+import 'package:timemanager/templates/drawer_button.dart';
 
 class PageTemplate extends StatelessWidget {
   final String pageTitle;
@@ -34,46 +34,13 @@ class PageTemplate extends StatelessWidget {
         child: new Drawer(
           child: new ListView(
             children: <Widget>[
-              new Container(margin: EdgeInsets.only(top: 50.0),),
+              new Container(margin: EdgeInsets.only(top: 50.0)),
 
-              new Container(
-                margin: EdgeInsets.only(left: leftMargin, top: topMargin),
-                child: new DrawerEntry(
-                  tapHandle: () {
-                    Navigator.pop(context);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => PageTemplate(pageTitle: 'Home', page: HomePage()))
-                    );
-                  },
-                  icon: Icon(Icons.home),
-                  text: ' Home'
-                )
-              ),
+              new DrawerButton(leftMargin: leftMargin, topMargin: topMargin, page: HomePage(), title: 'Home', icon: Icon(Icons.home)),
 
-              new Container(
-                margin: EdgeInsets.only(left: leftMargin, top: topMargin),
-                child: new DrawerEntry(
-                  tapHandle: () {
-                    Navigator.pop(context);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => PageTemplate(pageTitle: 'Calendar', page: CalendarPage()))
-                    );
-                  },
-                  icon: Icon(Icons.help),
-                  text: ' Calendar'
-                )
-              ),
+              new DrawerButton(leftMargin: leftMargin, topMargin: topMargin, page: CalendarPage(), title: 'Calendar', icon: Icon(Icons.calendar_today)),
 
-              new Container(
-                margin: EdgeInsets.only(left: leftMargin, top: topMargin),
-                child: new DrawerEntry(
-                  tapHandle: () => print('new event!'),
-                  icon: Icon(Icons.help),
-                  text: ' New event'
-                )
-              ),
+              new DrawerButton(leftMargin: leftMargin, topMargin: topMargin, page: SettingsPage(), title: 'Settings', icon: Icon(Icons.settings)),
 
             ],
           )

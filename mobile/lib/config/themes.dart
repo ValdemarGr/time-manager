@@ -1,14 +1,16 @@
 
 import 'package:flutter/material.dart';
-import 'package:timemanager/util/tuple.dart';
 
 class MyThemeData {
-    final ThemeData themeData;
-
+  final ThemeData themeData;
+  final Color innerCalendarBorderColor;
+  final Color outerCalendarBorderColor;
 
   MyThemeData({
     @required
     this.themeData,
+    this.innerCalendarBorderColor,
+    this.outerCalendarBorderColor
   });
 }
 
@@ -18,6 +20,8 @@ class Themes {
   static MyThemeData defaultTheme(BuildContext context) {
     return MyThemeData(
       themeData: Theme.of(context),
+      innerCalendarBorderColor: Colors.grey,
+      outerCalendarBorderColor: Colors.blueAccent
     );
   }
 }
