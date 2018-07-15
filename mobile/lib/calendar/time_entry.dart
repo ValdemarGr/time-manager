@@ -1,28 +1,29 @@
 
 import 'package:flutter/material.dart';
 
+import 'package:timemanager/calendar/calc/static_utility.dart';
+
 class TimeEntry extends StatelessWidget {
   final double sideMargins;
   final double height;
-  final Widget foreground;
   final Widget background;
 
-  final Function rightSwipe;
-  final Function leftSwipe;
+  final Function onTap;
+
+  final DateTime eventTime;
+  final String eventTitle;
 
   TimeEntry({
-    @required
-    this.sideMargins,
-    @required
-    this.height,
-    @required
-    this.foreground,
+    this.sideMargins = 0.0,
+    this.height = 60.0,
     @required
     this.background,
     @required
-    this.rightSwipe,
+    this.onTap,
     @required
-    this.leftSwipe
+    this.eventTime,
+    @required
+    this.eventTitle
   });
 
   @override
@@ -34,10 +35,42 @@ class TimeEntry extends StatelessWidget {
         children: <Widget>[
           background,
 
-          GestureDetector(
-            onTap: () => print(''),
-            child: foreground
-          ),
+          Row(
+            children: <Widget>[
+              Container(width: 20.0),
+
+              Container(
+                width: MediaQuery.of(context).size.width / 3,
+                child: Text(
+                  this.eventTitle,
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: this.height / 2 - 5.0
+                  ),
+                ),
+              ),
+
+              Expanded(
+                child: Container(
+                  margin: EdgeInsets.only(right: 20.0),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Builder(
+                      builder: (context) {
+                        return Text(
+                          StaticUtility.formatTime(this.eventTime),
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 25.0
+                          ),
+                        );
+                      },
+                    )
+                  )
+                )
+              ),
+            ],
+          )
         ],
       )
     );

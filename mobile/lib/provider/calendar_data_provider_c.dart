@@ -1,8 +1,11 @@
 
 import 'package:flutter/material.dart';
 
+import 'dart:async';
+
 import 'package:timemanager/calendar/time_entry_data.dart';
 
 abstract class CalendarDataProviderC {
-  List<TimeEntryData> getData(DateTime dt);
+  void removeEvent(TimeEntryData ted);
+  Future<List<TimeEntryData>> getData(DateTime dt);
 }

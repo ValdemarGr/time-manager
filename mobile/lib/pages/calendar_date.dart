@@ -1,15 +1,20 @@
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
-import 'package:timemanager/testing/testing_data_provider.dart';
-import 'package:timemanager/provider/calendar_data_provider_c.dart';
-
+import 'package:timemanager/calendar/time_entry_data.dart';
 import 'package:timemanager/calendar/time_entry.dart';
+import 'package:timemanager/calendar/calc/static_utility.dart';
+
+import 'package:timemanager/templates/page_template.dart';
+import 'package:timemanager/templates/fast_left_slide_page_animation.dart';
+
+import 'package:timemanager/pages/time_entry.dart';
 
 import 'package:timemanager/config/statics.dart';
 
-class CalendarDate extends StatelessWidget {
-
+class CalendarDate extends StatefulWidget {
   final DateTime date;
 
   CalendarDate({
@@ -18,22 +23,74 @@ class CalendarDate extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ListView(
-      children: Statics.provider.getData(this.date).map((entryData) {
-        return <Widget>[
-          Container(height: 40.0),
+  CalendarDateState createState() => CalendarDateState();
+}
 
-          TimeEntry(
-            sideMargins: 0.0, 
-            height: 60.0,
-            foreground: Text(entryData.entryName),
-            background: Container(color: Colors.blue),
-            leftSwipe: () => print(''),
-            rightSwipe: () => print(''),
-          )
-        ];
-      }).expand((i) => i).toList()
+class CalendarDateState extends State<CalendarDate> {
+
+  void removeTimeEntry(TimeEntryData ted) {
+    setState(() {
+      Statics.provider.removeEvent(ted);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final double height = 60.0;
+    final double sideMargins = 0.0;
+
+    return FutureBuilder(
+      future: Statics.provider.getData(widget.date),
+      builder: (BuildContext context, AsyncSnapshot<List<TimeEntryData>> snapshot) {
+        if (snapshot.hasData) {
+          return Column(
+            children: <Widget>[
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () => print('')
+                ),
+              ),
+
+              Expanded(
+                child: ListView(
+                  children: snapshot.data.map((entryData) {
+                    return <Widget>[
+                      Container(height: 20.0),
+
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            FastLeftSlidePageAnimation(builder: (context) => PageTemplate(pageTitle:  '${StaticUtility.formatTime(entryData.entryTime)} ${entryData.entryName}', page: TimeEntryPage()))
+                          );
+                        },
+                        child: TimeEntry(
+                          sideMargins: 20.0, 
+                          height: 60.0,
+                          background: Container(color: Colors.blueGrey),
+                          onTap: () => removeTimeEntry(entryData),
+                          eventTitle: entryData.entryName,
+                          eventTime: entryData.entryTime,
+                        ),
+                      ),
+                      
+
+                      Container(height: 20.0),
+                    ];
+                  }).expand((i) => i).toList()
+                )
+              ),
+
+              
+            ],
+          );
+        } else return Align(
+          alignment: Alignment.center,
+          child: CircularProgressIndicator()
+        );
+      },
     );
   }
 }
