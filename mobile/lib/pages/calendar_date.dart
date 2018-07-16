@@ -18,8 +18,7 @@ class CalendarDate extends StatefulWidget {
   final DateTime date;
 
   CalendarDate({
-    @required
-    this.date
+    @required this.date
   });
 
   @override
@@ -49,7 +48,10 @@ class CalendarDateState extends State<CalendarDate> {
                 alignment: Alignment.bottomCenter,
                 child: IconButton(
                   icon: Icon(Icons.add),
-                  onPressed: () => print('')
+                  onPressed: () => Statics.provider.addEvent(TimeEntryData(
+                    entryName: 'Added',
+                    entryTime: DateTime.now()
+                  ))
                 ),
               ),
 
@@ -63,7 +65,7 @@ class CalendarDateState extends State<CalendarDate> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            FastLeftSlidePageAnimation(builder: (context) => PageTemplate(pageTitle:  '${StaticUtility.formatTime(entryData.entryTime)} ${entryData.entryName}', page: TimeEntryPage()))
+                            FastLeftSlidePageAnimation(builder: (context) => PageTemplate(pageTitle:  '${StaticUtility.formatTime(entryData.entryTime)} ${entryData.entryName}', page: TimeEntryPage(ted: entryData)))
                           );
                         },
                         child: TimeEntry(

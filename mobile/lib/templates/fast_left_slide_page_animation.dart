@@ -8,7 +8,7 @@ class FastLeftSlidePageAnimation<T> extends MaterialPageRoute<T> {
   }) : super(builder: builder);
   
   @override
-  Duration get transitionDuration => const Duration(milliseconds: 250);
+  Duration get transitionDuration => const Duration(milliseconds: 150);
 
   @override
   Widget buildTransitions(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {

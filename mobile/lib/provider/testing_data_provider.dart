@@ -63,4 +63,9 @@ class TestingDataProvider extends CalendarDataProviderC {
   Future<List<TimeEntryData>> getData(DateTime dt) {
     return Future.delayed(const Duration(seconds: 0), () => list);
   }
+
+  @override
+  void addEvent(TimeEntryData ted) {
+    this.list.add(ted);
+  }
 }

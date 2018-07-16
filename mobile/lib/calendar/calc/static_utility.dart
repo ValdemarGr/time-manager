@@ -3,8 +3,11 @@ import 'dart:core';
 
 class StaticUtility {
   static int daysInCurrentMonth() {
-    final DateTime current = DateTime.now();
-    return DateTime(current.year, current.month % 12 + 1, 0).day;
+    return daysInMonth(DateTime.now());
+  }
+
+  static int daysInMonth(DateTime dt) {
+    return DateTime(dt.year, dt.month % 12 + 1, 0).day;
   }
 
   static String formatTime(DateTime dt) {
