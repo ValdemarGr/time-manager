@@ -41,7 +41,7 @@ class CalendarPage extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                FastLeftSlidePageAnimation(builder: (context) => PageTemplate(pageTitle: '$dateday-${dateInQuestion.month}-${dateInQuestion.year - 2000}', page: CalendarDate(date: dateInQuestion)))
+                FastLeftSlidePageAnimation(builder: (context) => PageTemplate(pageTitle: '${StaticUtility.formatDate(dateInQuestion)}', page: CalendarDate(date: dateInQuestion)))
               );
             },
             child: Container(

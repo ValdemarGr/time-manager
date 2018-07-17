@@ -9,50 +9,7 @@ import 'dart:async';
 import 'dart:io';
 
 class TestingDataProvider extends CalendarDataProviderC {
-  List<TimeEntryData> list;
-
-  TestingDataProvider(){
-    final DateTime dt = DateTime.now();
-
-    list = <TimeEntryData>[
-      TimeEntryData(
-        entryName: 'First',
-        entryTime: DateTime(dt.year, dt.month, dt.day, 9, 30)
-      ),
-
-      TimeEntryData(
-        entryName: 'Second',
-        entryTime: DateTime(dt.year, dt.month, dt.day, 12, 00)
-      ),
-
-      TimeEntryData(
-        entryName: 'Third',
-        entryTime: DateTime(dt.year, dt.month, dt.day, 18, 22)
-      ),
-
-      TimeEntryData(
-        entryName: 'Third',
-        entryTime: DateTime(dt.year, dt.month, dt.day, 18, 22)
-      ),
-
-      TimeEntryData(
-        entryName: 'Third',
-        entryTime: DateTime(dt.year, dt.month, dt.day, 18, 22)
-      ),
-
-      TimeEntryData(
-        entryName: 'Third',
-        entryTime: DateTime(dt.year, dt.month, dt.day, 18, 22)
-      ),
-
-      TimeEntryData(
-        entryName: 'Third',
-        entryTime: DateTime(dt.year, dt.month, dt.day, 18, 22)
-      ),
-
-      
-    ];
-  }
+  List<TimeEntryData> list = List<TimeEntryData>();
 
   @override
   void removeEvent(TimeEntryData ted) {
@@ -60,12 +17,21 @@ class TestingDataProvider extends CalendarDataProviderC {
   }
 
   @override
-  Future<List<TimeEntryData>> getData(DateTime dt) {
-    return Future.delayed(const Duration(seconds: 0), () => list);
+  Future<List<TimeEntryData>> getData(DateTime dt) async => this.list.where((x) => x.entryTime.day == dt.day).toList();
+  
+  @override
+  void updateItem(int index, TimeEntryData ted) {
+    if (this.list.length <= index) {
+      return;
+    }
+
+    this.list[index] = ted;
   }
 
   @override
   void addEvent(TimeEntryData ted) {
-    this.list.add(ted);
+    final int found = this.list.indexWhere((x) => x.id == ted.id);
+
+    found != -1 ? this.updateItem(found, ted) : this.list.add(ted);
   }
 }

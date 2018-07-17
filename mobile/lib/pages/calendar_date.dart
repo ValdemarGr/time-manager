@@ -33,6 +33,13 @@ class CalendarDateState extends State<CalendarDate> {
     });
   }
 
+  void openEntryPage(BuildContext context, TimeEntryData ted) {
+    Navigator.push(
+      context,
+      FastLeftSlidePageAnimation(builder: (context) => PageTemplate(pageTitle:  '${StaticUtility.formatDate(ted.entryTime)} ${StaticUtility.formatTime(ted.entryTime)}', page: TimeEntryPage(ted: ted)))
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final double height = 60.0;
@@ -48,10 +55,16 @@ class CalendarDateState extends State<CalendarDate> {
                 alignment: Alignment.bottomCenter,
                 child: IconButton(
                   icon: Icon(Icons.add),
-                  onPressed: () => Statics.provider.addEvent(TimeEntryData(
-                    entryName: 'Added',
-                    entryTime: DateTime.now()
-                  ))
+                  onPressed: () { 
+                    final TimeEntryData newTed = TimeEntryData(
+                      id: Statics.autoIncSim++,
+                      entryName: 'New entry',
+                      entryTime: DateTime(widget.date.year, widget.date.month, widget.date.day, 12)
+                    );
+
+                    Statics.provider.addEvent(newTed);
+                    this.openEntryPage(context, newTed);
+                  }
                 ),
               ),
 
@@ -62,12 +75,7 @@ class CalendarDateState extends State<CalendarDate> {
                       Container(height: 20.0),
 
                       GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            FastLeftSlidePageAnimation(builder: (context) => PageTemplate(pageTitle:  '${StaticUtility.formatTime(entryData.entryTime)} ${entryData.entryName}', page: TimeEntryPage(ted: entryData)))
-                          );
-                        },
+                        onTap: () => this.openEntryPage(context, entryData),
                         child: TimeEntry(
                           sideMargins: 20.0, 
                           height: 60.0,

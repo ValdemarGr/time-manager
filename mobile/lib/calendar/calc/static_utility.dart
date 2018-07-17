@@ -18,4 +18,14 @@ class StaticUtility {
 
     return '$formattedHour:$formattedMinute';
   }
+
+  static String formatDate(DateTime dt) {
+    final int year = dt.toLocal().year;
+    final int month = dt.toLocal().month;
+    final int day = dt.toLocal().day;    
+    final String formattedDay = (day < 10) ? '0$day': '$day';
+    final String formattedMonth = (month < 10) ? '0$month': '$month';
+
+    return '$formattedDay/$formattedMonth/$year';
+  }
 }

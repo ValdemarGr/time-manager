@@ -9,4 +9,5 @@ abstract class CalendarDataProviderC {
   void removeEvent(TimeEntryData ted);
   Future<List<TimeEntryData>> getData(DateTime dt);
   void addEvent(TimeEntryData ted);
+  void updateItem(int index, TimeEntryData ted);
 }
