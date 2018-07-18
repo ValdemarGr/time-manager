@@ -13,6 +13,8 @@ class TimeEntry extends StatelessWidget {
   final DateTime eventTime;
   final String eventTitle;
 
+  final Color color;
+
   TimeEntry({
     this.sideMargins = 0.0,
     this.height = 60.0,
@@ -23,7 +25,8 @@ class TimeEntry extends StatelessWidget {
     @required
     this.eventTime,
     @required
-    this.eventTitle
+    this.eventTitle,
+    @required this.color
   });
 
   @override
@@ -37,7 +40,7 @@ class TimeEntry extends StatelessWidget {
 
           Row(
             children: <Widget>[
-              Container(width: 20.0),
+              Container(width: 25.0),
 
               Container(
                 width: MediaQuery.of(context).size.width / 3,
@@ -52,7 +55,20 @@ class TimeEntry extends StatelessWidget {
 
               Expanded(
                 child: Container(
-                  margin: EdgeInsets.only(right: 20.0),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Container(
+                      height: this.height - 20.0,
+                      width: this.height - 20.0,
+                      color: this.color,
+                    ),
+                  ),
+                ),
+              ),
+
+              Expanded(
+                child: Container(
+                  margin: EdgeInsets.only(right: 25.0),
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: Builder(

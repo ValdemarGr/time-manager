@@ -3,8 +3,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import 'package:timemanager/calendar/time_entry_data.dart';
-import 'package:timemanager/calendar/time_entry.dart';
+import 'package:timemanager/calendar/time_entry/time_entry_data.dart';
+import 'package:timemanager/calendar/time_entry/time_entry.dart';
 import 'package:timemanager/calendar/calc/static_utility.dart';
 
 import 'package:timemanager/templates/page_template.dart';
@@ -36,15 +36,12 @@ class CalendarDateState extends State<CalendarDate> {
   void openEntryPage(BuildContext context, TimeEntryData ted) {
     Navigator.push(
       context,
-      FastLeftSlidePageAnimation(builder: (context) => PageTemplate(pageTitle:  '${StaticUtility.formatDate(ted.entryTime)} ${StaticUtility.formatTime(ted.entryTime)}', page: TimeEntryPage(ted: ted)))
+      FastLeftSlidePageAnimation(builder: (context) => PageTemplate(pageTitle: 'Event'/*'${StaticUtility.formatDate(ted.entryTime)} ${StaticUtility.formatTime(ted.entryTime)}'*/, page: TimeEntryPage(ted: ted)))
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final double height = 60.0;
-    final double sideMargins = 0.0;
-
     return FutureBuilder(
       future: Statics.provider.getData(widget.date),
       builder: (BuildContext context, AsyncSnapshot<List<TimeEntryData>> snapshot) {
@@ -59,7 +56,7 @@ class CalendarDateState extends State<CalendarDate> {
                     final TimeEntryData newTed = TimeEntryData(
                       id: Statics.autoIncSim++,
                       entryName: 'New entry',
-                      entryTime: DateTime(widget.date.year, widget.date.month, widget.date.day, 12)
+                      entryTime: DateTime(widget.date.year, widget.date.month, widget.date.day, 6)
                     );
 
                     Statics.provider.addEvent(newTed);
@@ -79,10 +76,11 @@ class CalendarDateState extends State<CalendarDate> {
                         child: TimeEntry(
                           sideMargins: 20.0, 
                           height: 60.0,
-                          background: Container(color: Colors.blueGrey),
+                          background: Container(color: Colors.blueAccent),
                           onTap: () => removeTimeEntry(entryData),
                           eventTitle: entryData.entryName,
                           eventTime: entryData.entryTime,
+                          color: entryData.color
                         ),
                       ),
                       

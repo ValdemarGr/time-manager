@@ -10,6 +10,10 @@ class Statics {
   static final CalendarDataProviderC provider = new TestingDataProvider();
   static final double timeEntryMargin = 20.0;
 
+  static double marginFromWidth(BuildContext context, double width) {
+    return (MediaQuery.of(context).size.width - width) / 2;
+  }
+
   //Testing
   static int autoIncSim = 0;
 }

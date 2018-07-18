@@ -5,8 +5,12 @@ import 'package:timemanager/calendar/calc/static_utility.dart';
 import 'package:timemanager/templates/page_template.dart';
 import 'package:timemanager/pages/calendar_date.dart';
 
+import 'package:timemanager/calendar/time_entry/time_entry_data.dart';
+
 import 'package:timemanager/templates/fast_left_slide_page_animation.dart';
 import 'package:timemanager/templates/fade_page_animation.dart';
+
+import 'package:timemanager/config/statics.dart';
 
 import 'package:timemanager/config/themes.dart';
 
@@ -25,6 +29,7 @@ class CalendarPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final double spacing = 5.0;
     final double height = MediaQuery.of(context).size.width;
+    final double innerSpacing = 2.0;
 
     final Widget calendar = Container(
       height: height,
@@ -37,6 +42,28 @@ class CalendarPage extends StatelessWidget {
           int dateday = index+ 1;
           DateTime dateInQuestion = DateTime(ym.year, ym.month, dateday);
 
+          final FutureBuilder<List<TimeEntryData>> fb = FutureBuilder(
+            future: Statics.provider.getData(dateInQuestion),
+            builder: (BuildContext context, AsyncSnapshot<List<TimeEntryData>> snapshot) {
+              if (snapshot.hasData) {
+                return Container(
+                  margin: EdgeInsets.all(3.0),
+                  child: GridView.count(
+                    crossAxisSpacing: innerSpacing,
+                    mainAxisSpacing: innerSpacing,
+                    crossAxisCount: 6,
+                    children: snapshot.data.map((x) => Container(color: x.color,)).toList(),
+                  )
+                );
+              } else {
+                return Align(
+                  alignment: Alignment.center,
+                  child: CircularProgressIndicator()
+                );
+              }
+            }
+          );
+
           return GestureDetector(
             onTap: () {
               Navigator.push(
@@ -48,13 +75,19 @@ class CalendarPage extends StatelessWidget {
               decoration: BoxDecoration(
                 border: Border.all(color: Themes.current_theme.innerCalendarBorderColor)
               ),
-              child: Center(
-                child: Text(
-                  '${dateday}',
-                  style: Theme.of(context).textTheme.headline,
-                ),
+              child: Stack(
+                children: <Widget>[
+                  fb,
+
+                  Center(
+                    child: Text(
+                      '${dateday}',
+                      style: Theme.of(context).textTheme.headline,
+                    ),
+                  ),
+                ],
               ),
-            )
+            ),
           );
         }),
       ),
@@ -93,7 +126,7 @@ class CalendarPage extends StatelessWidget {
                 child: Text(
                   '${ym.month > 9 ? ym.month.toString() : '0' + ym.month.toString()}/${ym.year}',
                   style: TextStyle(
-                    fontSize: 35.0
+                    fontSize: 25.0
                   ),
                 ),
               ),

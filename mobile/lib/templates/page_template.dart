@@ -50,7 +50,7 @@ class PageTemplate extends StatelessWidget {
       appBar: new AppBar(
         leading: new IconButton(
           icon: Icon(Icons.arrow_back, size: 36.0,),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => Navigator.canPop(context) ? Navigator.pop(context) : null,
         ),
         title: new Align(
           child: new Text(this.pageTitle),
