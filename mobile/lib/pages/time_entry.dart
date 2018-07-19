@@ -28,13 +28,9 @@ class TimeEntryPage extends StatefulWidget {
 }
 
 class TimeEntryPageState extends State<TimeEntryPage> {
+  String timeErrorText;
 
-  void colorChange(BuildContext context, Color color, TimeEntryData currentTed) {
-    this.save(context, TimeEntryData(id: currentTed.id, entryName: currentTed.entryName, entryTime: currentTed.entryTime, color: color, endTime: currentTed.endTime));
-  }
-
-  void save(BuildContext context, TimeEntryData newTed) {
-    print('save called');
+  void save(TimeEntryData newTed) {
     Statics.provider.addEvent(newTed);
     setState(() {
     });
@@ -66,7 +62,7 @@ class TimeEntryPageState extends State<TimeEntryPage> {
           final int colorCount = 3;
 
           final List<Color> colors = <Color>[
-            Colors.green,
+            Colors.brown,
             Colors.redAccent,
             Colors.blueAccent,
             
@@ -113,8 +109,12 @@ class TimeEntryPageState extends State<TimeEntryPage> {
                         title: const Text('Name your event'),
                         content: Container(
                           child: TextField(
+                            autofocus: true,
                             controller: _controller,
-                            onChanged: (str) => this.save(context, TimeEntryData(id: ted.id, color: ted.color, endTime: ted.endTime, entryTime: ted.entryTime, entryName: str)),
+                            onChanged: (str) {
+                              ted.entryName = str;
+                              this.save(ted);
+                            },
                             decoration: InputDecoration(
                               hintText: 'Event name'
                             ),
@@ -141,6 +141,8 @@ class TimeEntryPageState extends State<TimeEntryPage> {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
+
+
                       Container(
                         margin: EdgeInsets.only(left: MediaQuery.of(context).size.width / 5 + 10.0),
                         child: FlatButton(
@@ -163,7 +165,17 @@ class TimeEntryPageState extends State<TimeEntryPage> {
                             ftod.then((todval) {
                               final DateTime dt = ted.entryTime;
                               final DateTime newDt = DateTime(dt.year, dt.month, dt.day, todval.hour, todval.minute);
-                              this.save(context, TimeEntryData(id: ted.id, entryName: ted.entryName, entryTime: newDt, endTime: ted.endTime, color: ted.color));
+
+                              if (newDt.isBefore(ted.endTime)) {
+                                timeErrorText = null;
+
+                                ted.entryTime = newDt;
+                                this.save(ted);
+                              } else {
+                                setState(() {
+                                  timeErrorText = 'The beginning must be before the end.';
+                                });
+                              }
                             });
                           },
                         ),
@@ -197,7 +209,17 @@ class TimeEntryPageState extends State<TimeEntryPage> {
                           ftod.then((todval) {
                             final DateTime dt = ted.endTime;
                             final DateTime newDt = DateTime(dt.year, dt.month, dt.day, todval.hour, todval.minute);
-                            this.save(context, TimeEntryData(id: ted.id, entryName: ted.entryName, endTime: newDt, entryTime: ted.entryTime, color: ted.color));
+
+                            if (newDt.isAfter(ted.entryTime)) {
+                              timeErrorText = null;
+
+                              ted.endTime = newDt;
+                              this.save(ted);
+                            } else {
+                              setState(() {
+                                timeErrorText = 'The end must be after the beginning';
+                              });
+                            }
                           });
                         },
                       ),
@@ -205,6 +227,25 @@ class TimeEntryPageState extends State<TimeEntryPage> {
                   ),
                 ],
               ),
+
+              Builder(
+                builder: (context) {
+                  if (this.timeErrorText != null) {
+                    return Center(
+                      child: Text(
+                        this.timeErrorText,
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 20.0,
+                        ),
+                      ),
+                    );
+                  } else {
+                    return Container();
+                  }
+                },
+              ),
+              
 
               Container(height: 15.0,),
 
@@ -222,7 +263,10 @@ class TimeEntryPageState extends State<TimeEntryPage> {
                         crossAxisCount: colorCount,
                         children: colors.map((x) {
                           return GestureDetector(
-                            onTap: () => this.colorChange(context, x, ted),
+                            onTap: () {
+                              ted.color = x;
+                              this.save(ted);
+                            },
                             child: Container(
                               color: x,
                             ),
@@ -262,7 +306,9 @@ class TimeEntryPageState extends State<TimeEntryPage> {
                                     ),
                                     onPressed: () {
                                       Navigator.pop(context);
-                                      this.colorChange(context, changedToColor, ted);
+
+                                      ted.color = changedToColor;
+                                      this.save(ted);
                                     },
                                   ),
                                 ),
@@ -283,9 +329,29 @@ class TimeEntryPageState extends State<TimeEntryPage> {
                 ),
               ),
 
+              Container(height: 15.0,),
+              
+              Center(
+                child: Text(
+                  'Is this task completable?',
+                  style: TextStyle(
+                    fontSize: 25.0
+                  ),
+                ),
+              ),
+
+              Checkbox(
+                value: ted.completable,
+                onChanged: (x) {
+                  ted.completable = x;
+                  this.save(ted);
+                },
+              ),
+
+              Container(height: 15.0,),
+
               Container(
                 height: buttonHeight,
-                //width: deleteButtonWidth,
                 margin: EdgeInsets.only(left: Statics.marginFromWidth(context, deleteButtonWidth), right: Statics.marginFromWidth(context, deleteButtonWidth)),
                 child: delete,
               ),

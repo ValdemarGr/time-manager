@@ -11,6 +11,7 @@ class TimeEntry extends StatelessWidget {
   final Function onTap;
 
   final DateTime eventTime;
+  final DateTime endTime;
   final String eventTitle;
 
   final Color color;
@@ -24,6 +25,7 @@ class TimeEntry extends StatelessWidget {
     this.onTap,
     @required
     this.eventTime,
+    @required this.endTime,
     @required
     this.eventTitle,
     @required this.color
@@ -73,12 +75,23 @@ class TimeEntry extends StatelessWidget {
                     alignment: Alignment.centerRight,
                     child: Builder(
                       builder: (context) {
-                        return Text(
-                          StaticUtility.formatTime(this.eventTime),
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 25.0
-                          ),
+                        return Column(
+                          children: <Widget>[
+                            Text(
+                              StaticUtility.formatTime(this.eventTime),
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontSize: 25.0
+                              ),
+                            ),
+                            Text(
+                              StaticUtility.formatTime(this.endTime),
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontSize: 25.0
+                              ),
+                            ),
+                          ],
                         );
                       },
                     )

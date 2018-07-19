@@ -52,7 +52,7 @@ class CalendarPage extends StatelessWidget {
                     crossAxisSpacing: innerSpacing,
                     mainAxisSpacing: innerSpacing,
                     crossAxisCount: 6,
-                    children: snapshot.data.map((x) => Container(color: x.color,)).toList(),
+                    children: snapshot.data.map((x) => Container(color: x.isCompleted ? Colors.green : x.color,)).toList(),
                   )
                 );
               } else {

@@ -69,23 +69,54 @@ class CalendarDateState extends State<CalendarDate> {
                 child: ListView(
                   children: snapshot.data.map((entryData) {
                     return <Widget>[
-                      Container(height: 20.0),
+                      Stack(
+                        children: <Widget>[
+                          GestureDetector(
+                            onTap: () => this.openEntryPage(context, entryData),
+                            child: TimeEntry(
+                              sideMargins: 20.0, 
+                              height: 60.0,
+                              background: Container(
+                                decoration: new ShapeDecoration(
+                                  color: Colors.blueAccent,
+                                  shape: new RoundedRectangleBorder(
+                                    borderRadius: new BorderRadius.all(Radius.circular(7.0)),
+                                  ),
+                                ),
+                              ),
+                              onTap: () => removeTimeEntry(entryData),
+                              eventTitle: entryData.entryName,
+                              eventTime: entryData.entryTime,
+                              color: entryData.color,
+                              endTime: entryData.endTime,
+                            ),
+                          ),
 
-                      GestureDetector(
-                        onTap: () => this.openEntryPage(context, entryData),
-                        child: TimeEntry(
-                          sideMargins: 20.0, 
-                          height: 60.0,
-                          background: Container(color: Colors.blueAccent),
-                          onTap: () => removeTimeEntry(entryData),
-                          eventTitle: entryData.entryName,
-                          eventTime: entryData.entryTime,
-                          color: entryData.color
-                        ),
+                          Builder(
+                            builder: (context) {
+                              if (entryData.completable) {
+                                return Container(
+                                  alignment: Alignment.centerRight,
+                                  margin: EdgeInsets.only(top: 30.0),
+                                  child: IconButton(
+                                    color: entryData.isCompleted ? Colors.green : Colors.black,
+                                    onPressed: () {
+                                      entryData.isCompleted = !entryData.isCompleted;
+                                      Statics.provider.addEvent(entryData);
+                                      setState(() {});
+                                    },
+                                    iconSize: 50.0,
+                                    icon: Icon(Icons.check_circle),
+                                  ),
+                                );
+                              } else {
+                                return Container(height: 95.0);
+                              }
+                            },
+                          ),                          
+                        ],
                       ),
-                      
 
-                      Container(height: 20.0),
                     ];
                   }).expand((i) => i).toList()
                 )
