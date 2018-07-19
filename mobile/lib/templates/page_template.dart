@@ -6,6 +6,7 @@ import 'package:timemanager/config/themes.dart';
 import 'package:timemanager/pages/home.dart';
 import 'package:timemanager/pages/calendar.dart';
 import 'package:timemanager/pages/settings.dart';
+import 'package:timemanager/pages/schedule.dart';
 
 import 'package:timemanager/templates/drawer_button.dart';
 
@@ -39,6 +40,8 @@ class PageTemplate extends StatelessWidget {
               new DrawerButton(leftMargin: leftMargin, topMargin: topMargin, page: HomePage(), title: 'Home', icon: Icon(Icons.home)),
 
               new DrawerButton(leftMargin: leftMargin, topMargin: topMargin, page: CalendarPage(), title: 'Calendar', icon: Icon(Icons.calendar_today)),
+
+              new DrawerButton(leftMargin: leftMargin, topMargin: topMargin, page: SchedulePage(), title: 'Schedule', icon: Icon(Icons.access_time)),
 
               new DrawerButton(leftMargin: leftMargin, topMargin: topMargin, page: SettingsPage(), title: 'Settings', icon: Icon(Icons.settings)),
 

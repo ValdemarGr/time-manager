@@ -36,7 +36,7 @@ class CalendarDateState extends State<CalendarDate> {
   void openEntryPage(BuildContext context, TimeEntryData ted) {
     Navigator.push(
       context,
-      FastLeftSlidePageAnimation(builder: (context) => PageTemplate(pageTitle: 'Event'/*'${StaticUtility.formatDate(ted.entryTime)} ${StaticUtility.formatTime(ted.entryTime)}'*/, page: TimeEntryPage(ted: ted)))
+      FastLeftSlidePageAnimation(builder: (context) => PageTemplate(pageTitle: 'Event', page: TimeEntryPage(ted: ted)))
     );
   }
 
